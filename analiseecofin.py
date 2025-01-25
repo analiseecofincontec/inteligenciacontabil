@@ -40,7 +40,7 @@ def analyze_data(data):
                 {"role": "user", "content": f"Por favor, analise os seguintes dados: {data}"}
             ]
         )
-        return response['choices'][0]['message']['content']
+        return response.choices[0].message["content"]
     except Exception as e:
         return f"Erro na análise: {str(e)}"
 
