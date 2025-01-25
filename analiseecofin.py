@@ -4,6 +4,7 @@ import openai
 import PyPDF2
 import io
 import os
+from docx import Document
 
 # Configurar a API do OpenAI a partir de variáveis de ambiente
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -44,14 +45,17 @@ def analyze_data(data):
     except Exception as e:
         return f"Erro na análise: {str(e)}"
 
-# Função para salvar o relatório em Excel
-def save_report_to_excel(report_content):
+# Função para salvar o relatório em Word
+def save_report_to_word(report_content):
     output = io.BytesIO()
-    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-        # Dividir o relatório em linhas e criar um DataFrame para salvar
-        report_lines = report_content.split('\n')
-        df = pd.DataFrame({"Análise": report_lines})
-        df.to_excel(writer, index=False, sheet_name="Relatório")
+    doc = Document()
+    doc.add_heading("Relatório de Análise Contábil e Financeira", level=1)
+
+    report_lines = report_content.split('\n')
+    for line in report_lines:
+        doc.add_paragraph(line)
+
+    doc.save(output)
     output.seek(0)
     return output
 
@@ -76,12 +80,12 @@ def main():
                 st.text_area("Relatório da Análise", value=report, height=300)
 
                 st.info("Preparando para download...")
-                excel_data = save_report_to_excel(report)
+                word_data = save_report_to_word(report)
                 st.download_button(
                     label="Baixar Relatório",
-                    data=excel_data,
-                    file_name="relatorio_analise.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    data=word_data,
+                    file_name="relatorio_analise.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
             except Exception as e:
                 st.error(f"Erro ao processar o arquivo PDF: {str(e)}")
@@ -99,12 +103,12 @@ def main():
                 st.text_area("Relatório da Análise", value=report, height=300)
 
                 st.info("Preparando para download...")
-                excel_data = save_report_to_excel(report)
+                word_data = save_report_to_word(report)
                 st.download_button(
                     label="Baixar Relatório",
-                    data=excel_data,
-                    file_name="relatorio_analise.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    data=word_data,
+                    file_name="relatorio_analise.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
             except Exception as e:
                 st.error(f"Erro ao processar o arquivo Excel: {str(e)}")
