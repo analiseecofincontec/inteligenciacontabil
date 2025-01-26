@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import openai>=1.0.0
+import openai
 import PyPDF2
 import io
 import os
