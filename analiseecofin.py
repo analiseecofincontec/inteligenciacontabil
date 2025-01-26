@@ -20,7 +20,7 @@ def extract_pdf_data(file):
 # Função para enviar dados à API do ChatGPT para análise
 def analyze_data(data):
     try:
-        response = openai.ChatCompletion.create(
+        response = openai.ChatCompletion.acreate(
             model="gpt-4",
             messages=[
                 {
@@ -41,7 +41,7 @@ def analyze_data(data):
                 {"role": "user", "content": f"Por favor, analise os seguintes dados: {data}"}
             ]
         )
-        return response["choices"][0]["message"]["content"]
+        return response.choices[0].message.content
     except Exception as e:
         return f"Erro na análise: {str(e)}"
 
