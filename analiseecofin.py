@@ -41,9 +41,7 @@ def analyze_data(data):
                 {"role": "user", "content": f"Por favor, analise os seguintes dados: {data}"}
             ]
         )
-        return response['choices'][0]['message']['content']
-    except AttributeError:
-        return "Erro ao acessar os dados retornados pela API. Certifique-se de estar usando a versão correta."
+        return response["choices"][0]["message"]["content"]
     except Exception as e:
         return f"Erro na análise: {str(e)}"
 
