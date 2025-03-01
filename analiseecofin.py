@@ -7,7 +7,9 @@ import os
 from docx import Document
 
 # Configurar a API do OpenAI a partir de variáveis de ambiente
-openai.api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("A variável de ambiente OPENAI_API_KEY não está definida. Configure antes de executar o código.")
 
 # Função para extrair texto de arquivos PDF
 def extract_pdf_data(file):
@@ -20,7 +22,7 @@ def extract_pdf_data(file):
 # Função para enviar dados à API do ChatGPT para análise
 def analyze_data(data):
     try:
-        client = openai.OpenAI()
+        client = openai.OpenAI(api_key=api_key)
         response = client.chat.completions.create(
             model="gpt-4",
             messages=[
